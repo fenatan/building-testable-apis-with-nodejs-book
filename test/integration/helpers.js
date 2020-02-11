@@ -6,13 +6,13 @@
 
 import supertest from 'supertest'; //Emulador para fazer requisições na API
 import chai from 'chai'; //Utilizado para fazer asserções
-import app from '../../src/app';
+import setupApp from '../../src/app';
 
 /*
     As GLOBAIS fazem parte do MOCHA e podem ser acessadas de qualquer teste
     sem necessidade de ser importado.
 */
 
-global.app = app;
-global.request = supertest(app);
+global.setupApp = setupApp;
+global.supertest = supertest;
 global.expect = chai.expect;
