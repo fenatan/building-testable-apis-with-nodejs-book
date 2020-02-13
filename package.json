@@ -8,7 +8,7 @@
     "start": "npm run build && node dist/server.js",
     "start:dev": "nodemon --exec babel-node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:integration": "NODE_ENV=test mocha --opts test/integration/mocha.opts test/integration/**/*_spec.js",
+    "test:integration": "NODE_ENV=test mocha --timeout 10000 --opts test/integration/mocha.opts test/integration/**/*_spec.js",
     "test:unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js "
   },
   "repository": {
