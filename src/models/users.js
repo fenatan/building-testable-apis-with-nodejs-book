@@ -8,27 +8,27 @@ const schema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-  role: String
+  role: String,
 });
 
-schema.pre('save', async function (next) {
-  if (!this.password || !this.isModified('password'))
-    return next();
+schema.pre('save', async function hashPass(next) {
+  if (!this.password || !this.isModified('password')) return next();
   try {
     const hashedPassword = await hashAsync(this.password, 10);
     this.password = hashedPassword;
+    return next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
 });
 
 schema.set('toJSON', {
-  transform: (doc, ret, options) => ({
+  transform: (doc, ret) => ({
     _id: ret._id,
     email: ret.email,
     name: ret.name,
-    role: ret.role
-  })
+    role: ret.role,
+  }),
 });
 
 const User = mongoose.model('User', schema);

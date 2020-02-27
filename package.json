@@ -9,7 +9,12 @@
     "start:dev": "nodemon --exec babel-node src/server.js",
     "test": "npm run test:unit && npm run test:integration",
     "test:integration": "NODE_ENV=test mocha --timeout 10000 --opts test/integration/mocha.opts test/integration/**/*_spec.js",
-    "test:unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js "
+    "test:unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts test/unit/**/*_spec.js ",
+    "lint": "eslint src --ext .js",
+    "lint:fix": "eslint src --fix --ext .js",
+    "prettier:list": "prettier --check 'src/**/*.js'",
+    "prettier:fix": "prettier --write 'src/**/*.js'",
+    "style:fix": "npm run lint:fix & npm run prettier:fix"
   },
   "repository": {
     "type": "git",
@@ -22,8 +27,12 @@
     "@babel/core": "^7.8.4",
     "@babel/node": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
+    "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-node": "^11.0.0",
     "mocha": "^7.0.1",
+    "prettier": "^1.19.1",
     "sinon": "^8.1.1",
     "supertest": "^4.0.2"
   },
