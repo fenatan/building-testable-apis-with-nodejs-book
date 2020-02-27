@@ -20,11 +20,9 @@ describe('Routes: Users', () => {
     }
 
     const expectedUser = {
-        __v: 0,
         _id: '56cb91bdc3464f14678934ca',
         name: 'Felipe Natan',
         email: 'felipe@gmail.com',
-        password: '123',
         role: 'admin'
     }
 
@@ -69,11 +67,9 @@ describe('Routes: Users', () => {
                 const newUser = Object.assign({}, { _id: customId, __v: 0 }, defaultUser);
 
                 const expectedSavedUser = {
-                    __v: 0,
                     _id: customId,
                     name: 'Felipe Natan',
                     email: 'felipe@gmail.com',
-                    password: '123',
                     role: 'admin'
                 }
 
@@ -108,15 +104,16 @@ describe('Routes: Users', () => {
             });
         });
     });
-
-    describe('when remove a user', () => {
-        it('should return status 204 when remove a user', done => {
-            request
-                .delete(`/users/${defaultId}`)
-                .end((err, res) => {
-                    expect(res.status).to.eql(204);
-                    done(err);
-                });
+    describe('DELETE /users', () => {
+        context('when remove a user', () => {
+            it('should return status 204 when remove a user', done => {
+                request
+                    .delete(`/users/${defaultId}`)
+                    .end((err, res) => {
+                        expect(res.status).to.eql(204);
+                        done(err);
+                    });
+            });
         });
     });
 });

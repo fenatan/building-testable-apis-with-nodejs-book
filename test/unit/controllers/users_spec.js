@@ -36,7 +36,7 @@ describe('Controllers: Users', () => {
             const usersController = new UsersController(User);
 
             await usersController.get(defaultRequest, response);
-
+            delete defaultUser.password;
             sinon.assert.calledWith(response.send, defaultUser);
         });
 
@@ -153,18 +153,21 @@ describe('Controllers: Users', () => {
             }
 
             class fakeUser {
-                static updateOne() { }
+                static findById() { }
+                save(){}
             }
 
-            const updateOneStub = sinon.stub(fakeUser, 'updateOne');
-            updateOneStub
-                .withArgs({ _id: fakeId }, updatedUser)
-                .resolves(updatedUser);
+            const findByIdStub = sinon.stub(fakeUser, 'findById');
+            const saveSpy = sinon.spy(fakeUser.prototype, 'save');
+            findByIdStub
+                .withArgs(fakeId)
+                .resolves(new fakeUser());
 
             const usersController = new UsersController(fakeUser);
             await usersController.update(request, response);
 
             sinon.assert.calledWith(response.sendStatus, 200);
+            sinon.assert.calledOnce(saveSpy);
         });
 
         context('when an error occurs', () => {
@@ -190,12 +193,12 @@ describe('Controllers: Users', () => {
                 }
 
                 class fakeUser {
-                    static updateOne() { }
+                    static findById() { }
                 }
 
-                const updateOneStub = sinon.stub(fakeUser, 'updateOne');
+                const updateOneStub = sinon.stub(fakeUser, 'findById');
                 updateOneStub
-                    .withArgs({ _id: fakeId }, updatedUser)
+                    .withArgs(fakeId)
                     .rejects({ message: 'Error' });
 
                 response.status.withArgs(422).returns(response);

@@ -37,11 +37,21 @@ class UsersController {
     }
 
     async update(req, res) {
+        const body = req.body;
         try {
-            await this.User.updateOne({ _id: req.params.id }, req.body);
+            const user = await this.User.findById(req.params.id);
+
+            user.name = body.name;
+            user.email = body.email;
+            user.role = body.role;
+            if (body.password) {
+                user.password = body.password;
+            }
+            await user.save();
+
             res.sendStatus(200);
-        } catch (error) {
-            res.status(422).send(error.message);
+        } catch (err) {
+            res.status(422).send(err.message);
         }
     }
 
