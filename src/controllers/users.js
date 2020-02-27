@@ -1,9 +1,11 @@
 import User from "../models/users";
 
+
 class UsersController {
 
-    constructor(User) {
+    constructor(User, AuthService) {
         this.User = User;
+        this.AuthService = AuthService;
     }
 
     async get(req, res) {
@@ -62,6 +64,24 @@ class UsersController {
         } catch (error) {
             res.status(400).send(error.message);
         }
+    }
+
+    async authenticate(req, res) {
+        const authService = new this.AuthService(this.User);
+        const user = await authService.authenticate(req.body);
+
+        if (!user) {
+           return res.sendStatus(401);
+        }
+
+        const token = this.AuthService.generateToken({
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            role: user.role
+        });
+
+        return res.send({ token });
     }
 }
 
